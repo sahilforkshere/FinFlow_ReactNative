@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import Button from '../ui/Button';
 import Input from './Input'
 
-function ExpenseForm({ onCancel, onSubmit, submitButtonLabel }) {
+function ExpenseForm({ onCancel, onSubmit, submitButtonLabel,defaultValues }) {
     const [inputValue, setInputValue] = useState({
-        amount: '',
-        date: '',
-        description: ''
+        amount: defaultValues ? defaultValues.amount.toString():' ',
+        date: defaultValues ? defaultValues.date.toISOString().slice(0,10): '',
+        description: defaultValues ?defaultValues.description : ''
     });
 
 
@@ -21,15 +21,35 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel }) {
             }
         });
     }
-    function submitHandler() {
-        const [d, m, y] = inputValue.date.split('/').map(Number);
-        const expenseData = {
-            amount: +inputValue.amount,
-            date: new Date(y, m - 1, d),
-            description: inputValue.description
-        };
-        onSubmit(expenseData);
-    }
+   function submitHandler() {
+  const [d, m, y] = inputValue.date.split('/').map(Number);
+  const parsed = new Date(y, m - 1, d);
+
+  if (
+    parsed.getFullYear() !== y ||
+    parsed.getMonth() !== m - 1 ||
+    parsed.getDate() !== d
+  ) {
+    return Alert.alert('Invalid date', 'Please enter a valid date in DD/MM/YYYY');
+  }
+  const expenseData={
+    amount: +inputValue.amount,
+    date: parsed,
+    description: inputValue.description
+  }
+  const amountIsValid= !isNaN(expenseData.amount) && expenseData.amount>0;
+  const dateIsValid=expenseData.date.toString()!=='Invalid Date';
+
+const descriptionIsValid=expenseData.description.trim().length>0;
+
+if (!amountIsValid || !dateIsValid ||!descriptionIsValid) {
+    Alert.alert('Invalid Input','Please Check your input Value');
+    return
+}
+
+  onSubmit(expenseData);
+}
+
 
 
     return <View>

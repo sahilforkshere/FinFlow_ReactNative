@@ -18,9 +18,10 @@ function ExpenseItem({ id, description, date, amount }) {
           <Text style={[styles.description, styles.textBase]}>
             {description}
           </Text>
-          <Text style={[styles.date, styles.textBase]}>
-            {date.toLocaleDateString()}
-          </Text>
+         <Text style={[styles.date, styles.textBase]}>
+  {date instanceof Date ? date.toLocaleDateString() : 'Invalid date'}
+</Text>
+
         </View>
         <View style={styles.amountContainer}>
           <Text style={styles.amount}>₹{amount.toFixed(2)}</Text>
