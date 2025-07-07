@@ -10,9 +10,9 @@ function RecentExpenses() {
   const recentExpenses=expenseCtx.expenses.filter((expense)=>{
     const today= new Date();
     const date7DaysAgo=getDateMinusDays(today,7);
-    return expense.date>date7DaysAgo;
+    return (expense.date>=date7DaysAgo) &&(expense.date<=today);
   })
-  return <ExpensesOutput expenses={recentExpenses} expensesPeriod="Last 7 days"/>
+  return <ExpensesOutput expenses={recentExpenses} expensesPeriod="Last 7 days" fallBackText="No Expenses in 7 days,Trying to Money huh 😊"/>
 }
 
 export default RecentExpenses

@@ -28,8 +28,8 @@ function ManageExpense({ route, navigation }) {
   if (isEditing) {
     expenseCtx.updateExpense(editedExpenseId, {
       description: 'Test',
-      amount: 2000,       // Better to store amount as a number
-      date: new Date()    // Or whatever actual date you need
+      amount: 2000,       
+      date: new Date()    
     });
   } else {
     expenseCtx.addExpense({
