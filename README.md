@@ -28,7 +28,7 @@
 
 ## 📷 Screenshots
 
-![Dashboard](/assets/screenshots/dashboard.jpg)
+![Dashboard](/assets/dashboard.jpg)
 *Overview of expenses*
 
 ---
