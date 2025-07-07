@@ -1,10 +1,13 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useContext, useLayoutEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import IconButton from '../components/ui/IconButton';
 import { GlobalStyles } from '../constants/styles';
 import Button from '../components/ui/Button';
+import { ExpensesContext } from '../store/expenses-context';
 
 function ManageExpense({ route, navigation }) {
+  const expenseCtx = useContext(ExpensesContext);
+
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
 
@@ -14,15 +17,30 @@ function ManageExpense({ route, navigation }) {
   }, [navigation, isEditing]);
 
   function deleteExpense() {
-
+    expenseCtx.deleteExpense(editedExpenseId);
+    navigation.goBack()
   }
 
   function cancelHandler() {
-
+    navigation.goBack();
   }
-  function confirmHandler() {
-
+ function confirmHandler() {
+  if (isEditing) {
+    expenseCtx.updateExpense(editedExpenseId, {
+      description: 'Test',
+      amount: 2000,       // Better to store amount as a number
+      date: new Date()    // Or whatever actual date you need
+    });
+  } else {
+    expenseCtx.addExpense({
+      description: 'Test',
+      amount: 1000,
+      date: new Date()
+    });
   }
+  navigation.goBack();
+}
+
 
 
   return (
@@ -55,12 +73,12 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: GlobalStyles.colors.primary800
   },
-  buttonContainer:{
- flexDirection:'row',
- alignItems:"center",
- justifyContent:'center',
- minWidth:120,
- 
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: 'center',
+    minWidth: 120,
+
   },
   deleteContainer: {
     marginTop: 16,
