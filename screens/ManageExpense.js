@@ -6,7 +6,7 @@ import Button from '../components/ui/Button';
 import { ExpensesContext } from '../store/expenses-context';
 import { TextInput } from 'react-native';
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
-import { storeExpense } from '../util/http';
+import { deleteExpensehttp, storeExpense, updateExpense } from '../util/http';
 
 function ManageExpense({ route, navigation }) {
   const expenseCtx = useContext(ExpensesContext);
@@ -14,32 +14,34 @@ function ManageExpense({ route, navigation }) {
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
 
-  const selectedExpense=expenseCtx.expenses.find(expense=>expense.id===editedExpenseId)
+  const selectedExpense = expenseCtx.expenses.find(expense => expense.id === editedExpenseId)
 
   useLayoutEffect(() => {
     console.log('Setting title, isEditing =', isEditing);
     navigation.setOptions({ title: isEditing ? 'Edit Expense' : 'Add Expense' });
   }, [navigation, isEditing]);
 
-  function deleteExpense() {
-    expenseCtx.deleteExpense(editedExpenseId);
+  async function deleteExpense() { 
+    await deleteExpensehttp(editedExpenseId);
+   expenseCtx.deleteExpense(editedExpenseId);
     navigation.goBack()
   }
 
   function cancelHandler() {
     navigation.goBack();
   }
-  function confirmHandler(expenseData) {
+  async function confirmHandler(expenseData) {
     if (isEditing) {
-      expenseCtx.updateExpense(editedExpenseId, 
-      expenseData
-    );
+      expenseCtx.updateExpense(editedExpenseId,
+        expenseData
+      );
+      await updateExpense(expenseData);
     } else {
-      storeExpense(expenseData);
+      const id = await storeExpense(expenseData);
       expenseCtx.addExpense(
-           expenseData
-      
-    
+        { ...expenseData, id: id }
+
+
       );
     }
     navigation.goBack();
@@ -50,7 +52,7 @@ function ManageExpense({ route, navigation }) {
   return (
 
     <View style={styles.container}>
-      <ExpenseForm onCancel={cancelHandler} submitButtonLabel={isEditing ? 'Update  ' : 'Add'} onSubmit={confirmHandler} defaultValues={selectedExpense}/>
+      <ExpenseForm onCancel={cancelHandler} submitButtonLabel={isEditing ? 'Update  ' : 'Add'} onSubmit={confirmHandler} defaultValues={selectedExpense} />
 
 
       {isEditing && (

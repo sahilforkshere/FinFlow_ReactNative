@@ -8,8 +8,10 @@ export async function storeExpense(expenseData) {
     url: BASE_URL + '.json',
     data: expenseData,
   });
+
+  const id=response.data.name;
   console.log('stored expense:', response.data);
-  return response.data.name;
+  return id;
 }
 
 export async function fetchExpenses() {
@@ -26,3 +28,15 @@ export async function fetchExpenses() {
   }
   return expenses;
 }
+
+
+ export function updateExpense (id,expenseData){
+   return  axios.put(BASE_URL+`/${id}.json`,expenseData);
+ }
+
+
+ export function deleteExpensehttp(id){
+    return axios.delete(BASE_URL+`/${id}.json`);
+
+ }
+
