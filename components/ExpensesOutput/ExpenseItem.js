@@ -5,12 +5,17 @@ import { useNavigation } from '@react-navigation/native';
 import { getFormattedDate } from '../../util/date';
 
 function ExpenseItem({ id, description, date, amount }) {
+  const amtNum = Number(amount);
+const display = isNaN(amtNum) ? '0.00' : amtNum.toFixed(2);
+
+<Text style={styles.amount}>₹{display}</Text>
   const navigation = useNavigation();
 
   function expensePressHandler() {
     navigation.navigate('ManageExpense', {
       expenseId: id
     });
+    
   }
   return (
     <Pressable style={({ pressed }) => pressed && styles.pressed} onPress={expensePressHandler}>
@@ -25,7 +30,9 @@ function ExpenseItem({ id, description, date, amount }) {
 
         </View>
         <View style={styles.amountContainer}>
-          <Text style={styles.amount}>₹{amount.toFixed(2)}</Text>
+          <Text style={styles.amount}>₹{display}</Text>
+       
+
         </View>
       </View>
     </Pressable>

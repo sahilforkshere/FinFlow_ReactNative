@@ -4,11 +4,11 @@ import Button from '../ui/Button';
 import Input from './Input'
 import { getFormattedDate } from '../../util/date';
 
-function ExpenseForm({ onCancel, onSubmit, submitButtonLabel,defaultValues }) {
+function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
     const [inputValue, setInputValue] = useState({
-        amount: defaultValues ? defaultValues.amount.toString():' ',
-        date: defaultValues ? getFormattedDate(defaultValues.date):'',
-        description: defaultValues ?defaultValues.description : ''
+        amount: defaultValues ? defaultValues.amount.toString() : ' ',
+        date: defaultValues ? getFormattedDate(defaultValues.date) : '',
+        description: defaultValues ? defaultValues.description : ''
     });
 
 
@@ -22,34 +22,38 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel,defaultValues }) {
             }
         });
     }
-   function submitHandler() {
-  const [d, m, y] = inputValue.date.split('/').map(Number);
-  const parsed = new Date(y, m - 1, d);
+    function submitHandler() {
+        const [d, m, y] = inputValue.date.split('/').map(Number);
+        const parsed = new Date(y, m - 1, d);
 
-  if (
-    parsed.getFullYear() !== y ||
-    parsed.getMonth() !== m - 1 ||
-    parsed.getDate() !== d
-  ) {
-    return Alert.alert('Invalid date', 'Please enter a valid date in DD/MM/YYYY');
-  }
-  const expenseData={
-    amount: +inputValue.amount,
-    date: parsed,
-    description: inputValue.description
-  }
-  const amountIsValid= !isNaN(expenseData.amount) && expenseData.amount>0;
-  const dateIsValid=expenseData.date.toString()!=='Invalid Date';
+        if (
+            parsed.getFullYear() !== y ||
+            parsed.getMonth() !== m - 1 ||
+            parsed.getDate() !== d
+        ) {
+            return Alert.alert('Invalid date', 'Please enter a valid date in DD/MM/YYYY');
+        }
+        const expenseData = {
+            amount: +inputValue.amount,
+            date: parsed,
+            description: inputValue.description
+        }
+        const amountIsValid = !isNaN(expenseData.amount) && expenseData.amount > 0;
+        const dateIsValid = expenseData.date.toString() !== 'Invalid Date';
 
-const descriptionIsValid=expenseData.description.trim().length>0;
+        const descriptionIsValid = expenseData.description.trim().length > 0;
 
-if (!amountIsValid || !dateIsValid ||!descriptionIsValid) {
-    Alert.alert('Invalid Input','Please Check your input Value');
-    return
-}
+        if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
+            Alert.alert('Invalid Input', 'Please Check your input Value');
+            return
+        }
 
-  onSubmit(expenseData);
-}
+        onSubmit({
+            amount: +inputValue.amount, // ensures it's numeric
+            date: parsed,
+            description: inputValue.description
+        });
+    }
 
 
 

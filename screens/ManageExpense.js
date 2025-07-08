@@ -6,6 +6,7 @@ import Button from '../components/ui/Button';
 import { ExpensesContext } from '../store/expenses-context';
 import { TextInput } from 'react-native';
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
+import { storeExpense } from '../util/http';
 
 function ManageExpense({ route, navigation }) {
   const expenseCtx = useContext(ExpensesContext);
@@ -34,8 +35,11 @@ function ManageExpense({ route, navigation }) {
       expenseData
     );
     } else {
-      expenseCtx.addExpense(
-       expenseData
+      storeExpense(expenseData);
+      expenseCtx.addExpense({
+           expenseData
+      }
+    
       );
     }
     navigation.goBack();
