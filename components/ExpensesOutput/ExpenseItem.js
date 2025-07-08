@@ -2,13 +2,14 @@ import React, { use } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GlobalStyles } from '../../constants/styles';
 import { useNavigation } from '@react-navigation/native';
+import { getFormattedDate } from '../../util/date';
 
 function ExpenseItem({ id, description, date, amount }) {
   const navigation = useNavigation();
 
   function expensePressHandler() {
-    navigation.navigate('ManageExpense',{
-      expenseId:id
+    navigation.navigate('ManageExpense', {
+      expenseId: id
     });
   }
   return (
@@ -18,9 +19,9 @@ function ExpenseItem({ id, description, date, amount }) {
           <Text style={[styles.description, styles.textBase]}>
             {description}
           </Text>
-         <Text style={[styles.date, styles.textBase]}>
-  {date instanceof Date ? date.toLocaleDateString() : 'Invalid date'}
-</Text>
+          <Text style={[styles.date, styles.textBase]}>
+           {getFormattedDate(date)}
+          </Text>
 
         </View>
         <View style={styles.amountContainer}>
