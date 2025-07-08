@@ -45,9 +45,21 @@
 
 ---
 
-## ⚙️ Installation & Usage
+## 🔌 Backend
 
-1. **Clone the repo**  
-   ```bash
-   git clone https://github.com/your-username/FinFlow.git
-   cd FinFlow
+Connected to Firebase Realtime Database for data persistence using REST API (via Axios).
+Works with secure rules and supports both offline and online syncing.
+---
+
+## 🔧 Installation
+
+1. Clone the repo  
+   `git clone https://github.com/your-username/FinFlow.git`  
+2. Navigate to project directory  
+   `cd FinFlow`  
+3. Install dependencies  
+   `npm install`  
+4. Run on Android or iOS  
+   `npx react-native run-android`  
+   `npx react-native run-ios` (macOS + Xcode only)
+
