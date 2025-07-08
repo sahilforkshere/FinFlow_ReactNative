@@ -129,7 +129,7 @@ function expensesReducer(state, action) {
     const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
 
 
-    function addExpense({ expenseData }) {
+    function addExpense( expenseData ) {
         dispatch({ type: 'ADD', payload: expenseData });
     }
     function deleteExpense(id) {

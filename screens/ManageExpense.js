@@ -36,9 +36,9 @@ function ManageExpense({ route, navigation }) {
     );
     } else {
       storeExpense(expenseData);
-      expenseCtx.addExpense({
+      expenseCtx.addExpense(
            expenseData
-      }
+      
     
       );
     }
